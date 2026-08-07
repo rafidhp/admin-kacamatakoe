@@ -37,6 +37,7 @@ export default function HomePage() {
         <Button
           onClick={() => signIn('google', {
             redirectTo: '/dashboard',
+            prompt: 'select_account',
           })}
           className='
             border border-black
@@ -56,6 +57,7 @@ export default function HomePage() {
             height={0}
             sizes="100vw"
             className="h-5 w-5"
+            priority
           />
           Login dengan Google
         </Button>

@@ -1,12 +1,13 @@
 import "@/styles/globals.css";
 
+import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "KacamataKoe",
   description: "KacamataKoe admin page",
-  icons: [{ rel: "icon", url: "/logos/logo-dark.png" }],
+  icons: [{ rel: "icon", url: "/logos/logo-dark-frame-bg.png" }],
 };
 
 const poppins = Poppins({
@@ -30,7 +31,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <AuthSessionProvider>
+          {children}
+        </AuthSessionProvider>
+      </body>
     </html>
   );
 }

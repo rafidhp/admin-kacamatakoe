@@ -2,11 +2,19 @@ import "@/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
+import AppLayout from "@/layouts/app-layout";
+import type { BreadcrumbItem } from "@/layouts/app-layout";
+
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Dashboard',
+    href: '/dashboard',
+  },
+]
 
 export const metadata: Metadata = {
   title: "Dashboard | KacamataKoe",
   description: "KacamataKoe admin page",
-  icons: [{ rel: "icon", url: "/logos/logo-dark.png" }],
 };
 
 const poppins = Poppins({
@@ -25,12 +33,16 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <AppLayout breadcrumbs={breadcrumbs}>
+          {children}
+        </AppLayout>
+      </body>
     </html>
   );
 }
