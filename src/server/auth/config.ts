@@ -1,8 +1,8 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
-import DiscordProvider from "next-auth/providers/discord";
 
+import { eq } from "drizzle-orm";
 import { db } from "@/server/db";
 import {
   accounts,
@@ -39,7 +39,6 @@ declare module "next-auth" {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider,
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
       clientSecret: process.env.AUTH_GOOGLE_SECRET!,
@@ -61,6 +60,23 @@ export const authConfig = {
     verificationTokensTable: verificationTokens,
   }),
   callbacks: {
+    async signIn({ user }) {
+      if (!user.email) {
+        return false;
+      }
+
+      const existingUser = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, user.email))
+        .limit(1);
+
+      if (existingUser.length === 0) {
+        return false;
+      }
+
+      return true;
+    },
     session: ({ session, user }) => ({
       ...session,
       user: {

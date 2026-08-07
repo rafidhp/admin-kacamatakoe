@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { signIn } from "next-auth/react";
 import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
@@ -32,6 +35,9 @@ export default function HomePage() {
           </p>
         </div>
         <Button
+          onClick={() => signIn('google', {
+            redirectTo: '/dashboard',
+          })}
           className='
             border border-black
             bg-transparent hover:bg-black

@@ -4,7 +4,7 @@ import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: "KacamataKoe",
+  title: "Dashboard | KacamataKoe",
   description: "KacamataKoe admin page",
   icons: [{ rel: "icon", url: "/logos/logo-dark.png" }],
 };
