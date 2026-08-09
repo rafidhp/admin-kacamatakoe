@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { useNavigationLoader } from "@/components/app-layout/navigation-loader";
 import {
   Home,
-  Package,
   Settings,
   Glasses,
   Blocks,
+  LibraryBig,
 } from "lucide-react";
 import {
   SidebarGroupLabel,
@@ -24,6 +24,11 @@ const items = [
     icon: Home,
   },
   {
+    title: "Kategori",
+    url: "/dashboard/categories",
+    icon: LibraryBig,
+  },
+  {
     title: "Kacamata",
     url: "/dashboard/glasses",
     icon: Glasses,
@@ -32,11 +37,6 @@ const items = [
     title: "Produk Lainnya",
     url: "/dashboard/other-products",
     icon: Blocks,
-  },
-  {
-    title: "Produk",
-    url: "/dashboard/products",
-    icon: Package,
   },
   {
     title: "Settings",

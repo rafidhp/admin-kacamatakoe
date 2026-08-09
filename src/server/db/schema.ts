@@ -114,6 +114,8 @@ export const categories = createTable('categories', (d) => ({
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: d.text({ length: 255 }).notNull(),
+  description: d.text({ length: 255 }),
+  isGlasses: d.integer({ mode: 'boolean' }).default(false),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -191,10 +193,37 @@ export const productsRelations = relations(products, ({ many, one }) => ({
     fields: [products.promoId],
     references: [promos.id],
   }),
+  productAdvantages: many(productAdvantages),
   productImages: many(productImages),
   productVariants: many(productVariants),
   attributes: many(attributes),
 }));
+
+export const productAdvantages = createTable(
+  'productAdvantages',
+  (d) => ({
+    id: d
+      .text({ length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    productId: d
+      .text()
+      .notNull()
+      .references(() => products.id),
+    value: d.text({ length: 255 }).notNull(),
+  }),
+);
+
+export const productAdvantagesRelations = relations(
+  productAdvantages,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productAdvantages.productId],
+      references: [products.id],
+    }),
+  }),
+);
 
 export const productImages = createTable(
   'productImages',

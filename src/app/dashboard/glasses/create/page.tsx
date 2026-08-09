@@ -1,5 +1,7 @@
+import GlassesForm from "@/components/glasses/glasses-form"
+
 export default function GlassesCreate() {
   return (
-    <div>create glasses</div>
+    <GlassesForm />
   )
 }
