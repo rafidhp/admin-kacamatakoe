@@ -2,7 +2,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/server/db";
 import {
   accounts,
@@ -66,9 +66,15 @@ export const authConfig = {
       }
 
       const existingUser = await db
-        .select()
+        .select({
+          email: users.email,
+          role: users.role,
+        })
         .from(users)
-        .where(eq(users.email, user.email))
+        .where(and(
+          eq(users.email, user.email),
+          eq(users.role, 'superadmin')
+        ))
         .limit(1);
 
       if (existingUser.length === 0) {

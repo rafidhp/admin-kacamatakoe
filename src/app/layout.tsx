@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
 import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { NavigationLoaderProvider } from "@/components/app-layout/navigation-loader";
 
 export const metadata: Metadata = {
   title: "KacamataKoe",
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable}`}>
       <body className="font-sans">
-        <AuthSessionProvider>
-          {children}
-        </AuthSessionProvider>
+        <NavigationLoaderProvider>
+          <AuthSessionProvider>
+            {children}
+          </AuthSessionProvider>
+        </NavigationLoaderProvider>
       </body>
     </html>
   );

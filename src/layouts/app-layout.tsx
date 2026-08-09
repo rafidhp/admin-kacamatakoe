@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-layout/app-sidebar";
 import { AppHeader } from "@/components/app-layout/app-header";
+import { NavigationLoaderProvider } from "@/components/app-layout/navigation-loader";
 
 export interface BreadcrumbItem {
   title: string;
@@ -20,15 +21,17 @@ export default function AppLayout({
   breadcrumbs,
 }: AppLayoutProps) {
   return (
-    <SidebarProvider>
-      <AppSidebar />
+    <NavigationLoaderProvider>
+      <SidebarProvider>
+        <AppSidebar />
 
-      <SidebarInset className="font-[poppins]">
-          <AppHeader breadcrumbs={breadcrumbs} />
-          <main className="p-6">
+        <SidebarInset className="font-[poppins]">
+            <AppHeader breadcrumbs={breadcrumbs} />
+            <main className="p-6">
               {children}
-          </main>
-      </SidebarInset>
-    </SidebarProvider>
+            </main>
+        </SidebarInset>
+      </SidebarProvider>
+    </NavigationLoaderProvider>
   );
 }

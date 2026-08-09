@@ -2,9 +2,28 @@
 
 import Image from "next/image";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
 import { Button } from '@/components/ui/button';
+import { Loader2 } from "lucide-react";
 
 export default function HomePage() {
+  const [isLogin, setIsLogin] = useState(false);
+
+  const hanldeLoginClicked = async () => {
+    setIsLogin(true);
+
+    try {
+      await signIn('google', {
+        redirectTo: '/dashboard',
+        prompt: 'select_account',
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      setIsLogin(false);
+    } finally {
+      setIsLogin(false);
+    }
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white gap-12 font-[poppins]">
       <div className="flex items-center justify-center w-full max-w-lg">
@@ -35,10 +54,8 @@ export default function HomePage() {
           </p>
         </div>
         <Button
-          onClick={() => signIn('google', {
-            redirectTo: '/dashboard',
-            prompt: 'select_account',
-          })}
+          onClick={hanldeLoginClicked}
+          disabled={isLogin}
           className='
             border border-black
             bg-transparent hover:bg-black
@@ -50,15 +67,19 @@ export default function HomePage() {
             cursor-pointer
           '
         >
-          <Image
-            src='/login-page/google.png'
-            alt='Google logo'
-            width={0}
-            height={0}
-            sizes="100vw"
-            className="h-5 w-5"
-            priority
-          />
+          {isLogin ? (
+            <Loader2 className="animate-spin h-5 w-5" />
+          ) : (
+            <Image
+              src='/login-page/google.png'
+              alt='Google logo'
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-5 w-5"
+              priority
+            />
+          )}
           Login dengan Google
         </Button>
       </div>

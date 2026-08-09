@@ -2,44 +2,52 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useNavigationLoader } from "@/components/app-layout/navigation-loader";
 import {
-    Home,
-    Package,
-    Users,
-    Settings,
+  Home,
+  Package,
+  Settings,
+  Glasses,
+  Blocks,
 } from "lucide-react";
 import {
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
 const items = [
-    {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: Home,
-    },
-    {
-        title: "Produk",
-        url: "/dashboard/products",
-        icon: Package,
-    },
-    {
-        title: "Users",
-        url: "/dashboard/users",
-        icon: Users,
-    },
-    {
-        title: "Settings",
-        url: "/dashboard/settings",
-        icon: Settings,
-    },
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: Home,
+  },
+  {
+    title: "Kacamata",
+    url: "/dashboard/glasses",
+    icon: Glasses,
+  },
+  {
+    title: "Produk Lainnya",
+    url: "/dashboard/other-products",
+    icon: Blocks,
+  },
+  {
+    title: "Produk",
+    url: "/dashboard/products",
+    icon: Package,
+  },
+  {
+    title: "Settings",
+    url: "/dashboard/settings",
+    icon: Settings,
+  },
 ];
 
 export function NavMain() {
     const pathname = usePathname();
+    const { startLoading } = useNavigationLoader();
 
     return (
         <SidebarMenu className="flex flex-col p-1">
@@ -51,6 +59,11 @@ export function NavMain() {
                     <SidebarMenuItem key={item.title}>
                         <Link
                             href={item.url}
+                            onClick={() => {
+                              if (pathname !== item.url) {
+                                startLoading();
+                              }
+                            }}
                             className="flex items-center gap-2"
                         >
                             <SidebarMenuButton
