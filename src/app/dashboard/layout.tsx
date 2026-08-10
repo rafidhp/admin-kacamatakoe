@@ -1,14 +1,7 @@
 import { type Metadata } from "next";
 import AppLayout from "@/layouts/app-layout";
-import type { BreadcrumbItem } from "@/layouts/app-layout";
 import { Toaster } from "@/components/ui/sonner";
-
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Dashboard',
-    href: '/dashboard',
-  },
-]
+import { BreadcrumbProvider } from "@/components/providers/breadcrumb-provider";
 
 export const metadata: Metadata = {
   title: "Dashboard | KacamataKoe",
@@ -19,12 +12,14 @@ export default function DashboardLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <AppLayout breadcrumbs={breadcrumbs}>
-      <Toaster
-        position='top-right'
-        theme='light'
-      />
-      {children}
-    </AppLayout>
+    <BreadcrumbProvider>
+      <AppLayout>
+        <Toaster
+          position='top-right'
+          theme='light'
+        />
+        {children}
+      </AppLayout>
+    </BreadcrumbProvider>
   );
 }

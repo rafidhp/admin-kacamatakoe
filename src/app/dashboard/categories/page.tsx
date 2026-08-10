@@ -3,6 +3,7 @@ import CategoryHeader from "@/components/categories/category-header";
 import CategoryTable from "@/components/categories/category-table";
 import type { InferSelectModel } from "drizzle-orm";
 import { categories } from "@/server/db/schema";
+import PageBreadcrumb from "@/components/page-breadcrumb";
 
 export type Category = InferSelectModel<typeof categories>;
 
@@ -11,6 +12,14 @@ export default async function Categories() {
 
   return (
     <div className="flex flex-col gap-4">
+      <PageBreadcrumb
+        items={[
+          {
+            title: "Kategori",
+            href: "/dashboard/categories",
+          },
+        ]}
+      />
       <CategoryHeader />
       <CategoryTable categories={categoriesData} />
     </div>

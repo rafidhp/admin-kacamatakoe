@@ -1,60 +1,59 @@
+"use client";
+
+import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { useBreadcrumb } from "@/components/providers/breadcrumb-provider";
 
-interface BreadcrumbItemData {
-    title: string;
-    href?: string;
-}
+export function AppHeader() {
+  const { breadcrumbs } = useBreadcrumb();
 
-interface AppHeaderProps {
-    breadcrumbs?: BreadcrumbItemData[];
-}
+  return (
+    <header className="sticky top-0 z-20 flex h-[7vh] items-center border-b bg-white px-6">
+      <SidebarTrigger className="cursor-pointer" />
 
-export function AppHeader({
-    breadcrumbs,
-}: AppHeaderProps) {
-    return (
-        <header
-            className="
-                sticky top-0 z-20
-                flex h-[7vh] items-center
-                border-b bg-white
-                px-6
-            "
-        >
-            <SidebarTrigger className='cursor-pointer' />
+      <div className="ml-2">
+        {breadcrumbs.length > 0 && (
+          <Breadcrumb>
+            <BreadcrumbList>
+              {breadcrumbs.map((item, index) => {
+                const isLast =
+                  index === breadcrumbs.length - 1;
 
-            <div className="ml-2">
-                {breadcrumbs && (
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            {breadcrumbs.map((item, index) => (
-                                <div
-                                    key={item.title}
-                                    className="flex items-center"
-                                >
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>
-                                            {item.title}
-                                        </BreadcrumbPage>
-                                    </BreadcrumbItem>
+                return (
+                  <div
+                    key={`${item.title}-${index}`}
+                    className="flex items-center"
+                  >
+                    <BreadcrumbItem>
+                      {isLast || !item.href ? (
+                        <BreadcrumbPage>
+                          {item.title}
+                        </BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink>
+                          <Link href={item.href}>
+                            {item.title}
+                          </Link>
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
 
-                                    {index <
-                                        breadcrumbs.length - 1 && (
-                                        <BreadcrumbSeparator />
-                                    )}
-                                </div>
-                            ))}
-                        </BreadcrumbList>
-                    </Breadcrumb>
-                )}
-            </div>
-        </header>
-    );
+                    {!isLast && <BreadcrumbSeparator />}
+                  </div>
+                );
+              })}
+            </BreadcrumbList>
+          </Breadcrumb>
+        )}
+      </div>
+    </header>
+  );
 }
