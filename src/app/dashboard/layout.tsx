@@ -1,6 +1,7 @@
 import { type Metadata } from "next";
 import AppLayout from "@/layouts/app-layout";
 import type { BreadcrumbItem } from "@/layouts/app-layout";
+import { Toaster } from "@/components/ui/sonner";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -19,6 +20,10 @@ export default function DashboardLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
+      <Toaster
+        position='top-right'
+        theme='light'
+      />
       {children}
     </AppLayout>
   );

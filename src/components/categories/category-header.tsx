@@ -1,43 +1,46 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Plus } from "lucide-react";
-import { useNavigationLoader } from "@/components/app-layout/navigation-loader";
+import { useState } from "react";
+import CategoryForm from "./category-form";
 
 export default function CategoryHeader() {
-  const pathname = usePathname();
-  const { startLoading } = useNavigationLoader();
-  const createUrl = '/dashboard/categories/create'
+  const [createOpen, setCreateOpen] = useState(false);
+
+  const handleCreateClicked = () => {
+    setCreateOpen(true);
+  }
 
   return (
-    <div className="flex items center justify-between w-full">
+    <div className="flex items center justify-between w-full mb-8">
       <div className="flex flex-col gap-1">
         <h2 className="text-4xl font-semibold">Kategori</h2>
         <p className="text-sm text-muted-foreground">Daftar kategori untuk kacamata dan produk lainnya</p>
       </div>
       <div className="flex items-center">
-        <Link
-          onClick={() => {
-            if (pathname !== createUrl) {
-              startLoading();
-            }
-          }}
-          href={createUrl}
+        <div
+          onClick={handleCreateClicked}
           className="
-            group
+            group cursor-pointer
             px-4 py-1 gap-2
             flex items-center justify-center
             border border-black
             bg-black hover:bg-white
             text-white hover:text-black
-            transition rounded-md
+            transition rounded-sm
           "
         >
           <Plus className="size-4 text-white group-hover:text-black transition" />
           Tambah Kategori
-        </Link>
+        </div>
       </div>
+
+      {createOpen && (
+        <CategoryForm
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+        />
+      )}
     </div>
   )
 }
