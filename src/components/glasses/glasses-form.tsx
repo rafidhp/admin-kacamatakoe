@@ -2,9 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type { Category } from "@/app/dashboard/categories/page";
 import BasicInformation from "./form/basic-info";
 import type { FormType } from "./types";
 import MultiStepForm from "../multi-step-form";
+
+interface GlassesFormProps {
+  categories: Category[];
+}
 
 const steps = [
   {
@@ -24,7 +29,9 @@ const steps = [
   },
 ];
 
-export default function GlassesForm() {
+export default function GlassesForm({
+  categories,
+}: GlassesFormProps) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const isFirstStep = currentStep === 1;
@@ -39,6 +46,8 @@ export default function GlassesForm() {
     description: null,
     productType: 'glasses',
     glassesCode: null,
+
+    advantages: [],
   });
 
   const handleClose = () => {
@@ -82,6 +91,7 @@ export default function GlassesForm() {
           <BasicInformation
             data={data}
             setData={setData}
+            categories={categories}
           />
         );
 

@@ -6,4 +6,6 @@ export interface FormType {
   description: string | null;
   productType: 'glasses' | 'other';
   glassesCode: string | null;
+
+  advantages: string[];
 }
