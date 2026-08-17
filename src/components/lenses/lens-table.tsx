@@ -1,9 +1,9 @@
 "use client";
 
-import { Check, SquarePen, Trash2, X } from "lucide-react";
+import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { deleteCategory } from "@/app/dashboard/categories/actions";
-import type { Category } from "@/app/dashboard/categories/page";
+import { deleteLens } from "@/app/dashboard/lenses/actions";
+import type { Lenses } from "@/app/dashboard/lenses/page";
 import {
   Table,
   TableBody,
@@ -12,48 +12,46 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { formatRupiah } from "@/lib/currency";
 import { showSuccessToast } from "@/lib/toast";
-import CategoryForm from "./category-form";
+import LensForm from "./lens-form";
 import ConfirmationDialog from "../confirmation-dialog";
 
-interface CategoryTableProps {
-  categories: Category[];
+interface LensTableProps {
+  lenses: Lenses[];
 }
 
-export default function CategoryTable({ categories }: CategoryTableProps) {
+export default function LensTable({
+  lenses,
+}: LensTableProps) {
   const [editOpen, setEditOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<
-    Category | undefined
-  >();
-
+  const [selectedLens, setSelectedLens] = useState<Lenses | undefined>();
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState<
-    Category | undefined
-  >();
+  const [lensToDelete, setLensToDelete] = useState<Lenses | undefined>();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleEditClicked = (category: Category) => {
-    setSelectedCategory(category);
+  const handleEditClicked = (lens: Lenses) => {
+    setSelectedLens(lens);
     setEditOpen(true);
-  };
+  }
 
-  const handleDeleteClicked = (category: Category) => {
-    setCategoryToDelete(category);
+  const handleDeleteClicked = (lens: Lenses) => {
+    setLensToDelete(lens);
     setDeleteOpen(true);
   };
 
   const handleDelete = async () => {
-    if (!categoryToDelete) {
+    if (!lensToDelete) {
       return;
     }
 
     setIsDeleting(true);
 
     try {
-      await deleteCategory(categoryToDelete.id);
+      await deleteLens(lensToDelete.id);
 
       setDeleteOpen(false);
-      setCategoryToDelete(undefined);
+      setLensToDelete(undefined);
       showSuccessToast("Kategori berhasil dihapus");
     } catch (error) {
       console.error(error);
@@ -68,49 +66,40 @@ export default function CategoryTable({ categories }: CategoryTableProps) {
         <TableHeader>
           <TableRow className="border-b-black/40 hover:bg-transparent">
             <TableHead className="w-10">No</TableHead>
-            <TableHead className="text-center">Nama Kategori</TableHead>
-            <TableHead className="text-center">Deskripsi Kategori</TableHead>
-            <TableHead className="text-center">Kacamata</TableHead>
+            <TableHead className="text-center">Jenis Lensa</TableHead>
+            <TableHead className="text-center">Harga Lensa</TableHead>
             <TableHead className="text-center">Aksi</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.length === 0 ? (
+          {lenses.length === 0 ? (
             <TableRow className="h-16 hover:bg-transparent">
-              <TableCell colSpan={5}>
+              <TableCell colSpan={4}>
                 <span className="text-muted-foreground flex w-full items-center justify-center">
-                  Data kategori belum ada
+                  Data jenis lensa belum ada
                 </span>
               </TableCell>
             </TableRow>
           ) : (
-            categories.map((category, i) => (
-              <TableRow key={category.id}>
+            lenses.map((lens, i) => (
+              <TableRow key={lens.id}>
                 <TableCell className="w-10">{i + 1}</TableCell>
-                <TableCell className="text-center">{category.name}</TableCell>
                 <TableCell className="text-center">
-                  {(category.description ?? "-") ||
-                    (category.description === "" && "-")}
+                  {lens.name}
                 </TableCell>
                 <TableCell className="text-center">
-                  <div className="flex w-full items-center justify-center">
-                    {category.isGlasses ? (
-                      <Check className="text-green-500" />
-                    ) : (
-                      <X />
-                    )}
-                  </div>
+                  Rp {formatRupiah(lens.price)}
                 </TableCell>
                 <TableCell className="w-40">
                   <div className="flex items-center justify-center gap-4">
                     <div
-                      onClick={() => handleEditClicked(category)}
+                      onClick={() => handleEditClicked(lens)}
                       className="flex cursor-pointer items-center justify-center rounded-full p-1.5 transition hover:bg-gray-400/20"
                     >
                       <SquarePen className="size-5" />
                     </div>
                     <div
-                      onClick={() => handleDeleteClicked(category)}
+                      onClick={() => handleDeleteClicked(lens)}
                       className="flex cursor-pointer items-center justify-center rounded-full p-1.5 transition hover:bg-red-400/20"
                     >
                       <Trash2 className="size-5 text-red-500" />
@@ -125,10 +114,10 @@ export default function CategoryTable({ categories }: CategoryTableProps) {
 
       {/* dialogs */}
       {editOpen && (
-        <CategoryForm
+        <LensForm
           open={editOpen}
           onClose={() => setEditOpen(false)}
-          category={selectedCategory}
+          lenses={selectedLens}
         />
       )}
 
@@ -136,12 +125,12 @@ export default function CategoryTable({ categories }: CategoryTableProps) {
         <ConfirmationDialog
           open={deleteOpen}
           onClose={() => setDeleteOpen(false)}
-          title="Hapus Kategori"
-          text="Yakin mau hapus kategori?"
+          title="Hapus Lensa"
+          text="Yakin ingin menghapus lensa ini?"
           handleSubmit={handleDelete}
           isSubmitting={isDeleting}
         />
       )}
     </div>
-  );
+  )
 }

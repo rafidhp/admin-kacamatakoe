@@ -237,7 +237,7 @@ export const productImages = createTable(
       .text({ length: 255 })
       .notNull()
       .references(() => products.id),
-    image: d.text({ mode: 'text' }),
+    image: d.text({ mode: 'text' }).notNull(),
     sortOrder: d.integer().notNull().default(0),
   }),
 );

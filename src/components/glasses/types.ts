@@ -8,4 +8,10 @@ export interface FormType {
   glassesCode: string | null;
 
   advantages: string[];
+
+  images: {
+    id: string;
+    image: string;
+    sortOrder: number;
+  }[];
 }

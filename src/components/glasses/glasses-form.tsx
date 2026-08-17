@@ -6,6 +6,7 @@ import type { Category } from "@/app/dashboard/categories/page";
 import BasicInformation from "./form/basic-info";
 import type { FormType } from "./types";
 import MultiStepForm from "../multi-step-form";
+import GlassesImage from "./form/glasses-image";
 
 interface GlassesFormProps {
   categories: Category[];
@@ -18,8 +19,8 @@ const steps = [
     number: 1,
   },
   {
-    id: "blog-data",
-    title: "Blog Data",
+    id: "glasses-image",
+    title: "Foto Kacamata",
     number: 2,
   },
   {
@@ -37,6 +38,7 @@ export default function GlassesForm({
   const isFirstStep = currentStep === 1;
   const [isLoading, setIsLoading] = useState(false);
   const isLastStep = currentStep === steps.length;
+  const [isGlassesImageLoading, setIsGlassesImageLoading] = useState(false);
 
   const [data, setData] = useState<FormType>({
     id: '',
@@ -48,6 +50,8 @@ export default function GlassesForm({
     glassesCode: null,
 
     advantages: [],
+
+    images: []
   });
 
   const handleClose = () => {
@@ -96,7 +100,13 @@ export default function GlassesForm({
         );
 
       case 2:
-        return <div>Product Data</div>;
+        return (
+          <GlassesImage
+            data={data}
+            setData={setData}
+            onLoadingChange={setIsGlassesImageLoading}
+          />
+        );
 
       case 3:
         return <div>Gallery</div>;
@@ -113,6 +123,7 @@ export default function GlassesForm({
       onClose={handleClose}
       onNext={handleNext}
       onPrevious={handlePrevious}
+      canGoNext={!isGlassesImageLoading}
       canGoPrevious={!isFirstStep}
       nextButtonText={
         isLastStep ? "Simpan Kacamata" : "Berikutnya"

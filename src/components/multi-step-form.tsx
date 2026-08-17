@@ -132,7 +132,7 @@ export default function MultiStepForm({
             variant="outline"
             onClick={onPrevious}
             disabled={!canGoPrevious || currentStep === 1 || isLoading}
-            className="cursor-pointer"
+            className="cursor-pointer rounded-md"
           >
             Sebelumnya
           </Button>
@@ -140,7 +140,7 @@ export default function MultiStepForm({
             type="button"
             onClick={onNext}
             disabled={!canGoNext || isLoading}
-            className="cursor-pointer border border-black bg-black text-white transition-colors duration-200 hover:bg-white hover:text-black"
+            className="cursor-pointer border border-black bg-black text-white transition-colors duration-200 hover:bg-white hover:text-black rounded-md"
           >
             {isLoading ? (
               <>
